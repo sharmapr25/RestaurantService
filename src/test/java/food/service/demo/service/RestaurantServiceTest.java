@@ -2,7 +2,6 @@ package food.service.demo.service;
 
 import food.service.demo.entity.MenuItem;
 import food.service.demo.entity.Restaurant;
-import food.service.demo.exception.RestaurantAlreadyExistsException;
 import food.service.demo.repository.RestaurantRepository;
 import food.service.demo.web_api_contract.CreateRestaurantRequest;
 import org.junit.Test;
@@ -40,19 +39,5 @@ public class RestaurantServiceTest {
         Restaurant restaurant = restaurantService.create(restaurantRequest);
 
         assertEquals(restaurant,expectedRestaurant);
-    }
-
-    @Test
-    public void create_shouldThrowRestaurantAlreadyExistsException_whenTryToCreateSameRestaurantAgain(){
-        MenuItem jalebi = new MenuItem("dessert-01", "Jalebi", 30);
-        CreateRestaurantRequest restaurantRequest = new CreateRestaurantRequest("dhaba", Collections.singletonList(jalebi));
-
-        Restaurant restaurant = new Restaurant("dhaba", Collections.singletonList(jalebi));
-
-        when(restaurantRepository.findRestaurantByName(anyString())).thenReturn(restaurant);
-
-        assertThrows(RestaurantAlreadyExistsException.class, ()->{
-            restaurantService.create(restaurantRequest);
-        });
     }
 }
